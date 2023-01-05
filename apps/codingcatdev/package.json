@@ -16,12 +16,14 @@
 	"devDependencies": {
 		"@firebase/app-types": "0.x",
 		"@playwright/test": "^1.28.1",
+		"@skeletonlabs/skeleton": "^0.86.9",
 		"@sveltejs/adapter-auto": "^1.0.0",
 		"@sveltejs/adapter-vercel": "^1.0.0",
 		"@sveltejs/kit": "^1.0.0",
+		"@tailwindcss/forms": "^0.5.3",
+		"@tailwindcss/line-clamp": "^0.4.2",
 		"@tailwindcss/typography": "^0.5.8",
 		"autoprefixer": "^10.4.7",
-		"daisyui": "^2.45.0",
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
@@ -45,7 +47,6 @@
 		"mdsvex": "^0.10.6",
 		"prism-svelte": "^0.5.0",
 		"prism-themes": "^1.9.0",
-		"prismjs": "^1.29.0",
-		"theme-change": "^2.2.0"
+		"prismjs": "^1.29.0"
 	}
 }

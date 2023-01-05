@@ -1,4 +1,4 @@
-<footer class="p-10 footer bg-neutral text-neutral-content">
+<footer class="">
 	<div>
 		<span class="footer-title">Socials</span>
 		<a
