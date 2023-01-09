@@ -29,9 +29,12 @@
 					{@html data.content.content}
 				</section>
 			</div>
-			{#if data?.content?.lesson && data?.content?.slug}
+			{#if data?.content?.lesson && data?.content?.lesson.length > 0 && data?.content?.slug}
 				<div class="hidden xl:block">
-					<LessonList courseSlug={data?.content?.slug} lesson={data.content.lesson} />
+					<LessonList
+						courseSlug={data?.content?.courseSlug || data?.content?.slug}
+						lesson={data.content.lesson}
+					/>
 				</div>
 			{:else}
 				<div class="hidden xl:block">

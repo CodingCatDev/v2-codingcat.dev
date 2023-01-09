@@ -179,3 +179,83 @@ export const getContentBySlug = async (contentType, slug) => {
 		start: doc.data().start ? doc.data().start.toDate() : doc.data().start
 	};
 };
+
+/**
+ * Get lesson by course and slug
+ * @param {string} courseSlug
+ * @param {string} slug
+ * @returns {Promise<Content | null>}
+ * */
+export const getLessonBySlug = async (courseSlug, slug) => {
+	console.debug(`Searching for course: ${courseSlug} lesson slug: ${slug}`);
+
+	let courseQuery = firestore
+		.collection(ContentType.course)
+		.where('slug', '==', courseSlug)
+		.where('start', '<=', Timestamp.fromDate(new Date()))
+		.orderBy('start', 'desc')
+		.where('published', '==', 'published')
+		.limit(1);
+
+	const courseSnapshot = await courseQuery.get();
+
+	const course = courseSnapshot?.docs?.at(0);
+	if (!course) {
+		console.debug(`course not found`);
+		return null;
+	}
+
+	let query = firestore
+		.collection(ContentType.course)
+		.doc(course.id)
+		.collection(ContentType.lesson)
+		.where('slug', '==', slug)
+		.where('start', '<=', Timestamp.fromDate(new Date()))
+		.orderBy('start', 'desc')
+		.where('published', '==', 'published')
+		.limit(1);
+
+	const querySnapshot = await query.get();
+
+	const doc = querySnapshot?.docs?.at(0);
+	if (!doc) {
+		return null;
+	}
+
+	const lessonQuery = firestore
+		.collection(ContentType.course)
+		.doc(course.id)
+		.collection(ContentType.lesson)
+		.where('start', '<=', Timestamp.fromDate(new Date()))
+		.orderBy('start', 'desc')
+		.orderBy('weight')
+		.where('published', '==', 'published');
+
+	const lessonSnapshot = await lessonQuery.get();
+	const lesson = lessonSnapshot.docs.map((doc) => {
+		return {
+			id: doc.id,
+			...doc.data(),
+			start: doc.data().start ? doc.data().start.toDate() : doc.data().start
+		};
+	});
+
+	const markdown = doc.data().content || '';
+	const compiled = await compile(markdown);
+
+	let content = '';
+	if (compiled) {
+		// https://github.com/pngwn/MDsveX/issues/392
+		content = compiled.code
+			.replace(/>{@html `<code class="language-/g, '><code class="language-')
+			.replace(/<\/code>`}<\/pre>/g, '</code></pre>');
+	}
+	return {
+		id: doc.id,
+		...doc.data(),
+		content,
+		lesson,
+		courseSlug: course.data().slug,
+		start: doc.data().start ? doc.data().start.toDate() : doc.data().start
+	};
+};
