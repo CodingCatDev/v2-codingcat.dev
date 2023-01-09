@@ -139,6 +139,27 @@ export const getContentBySlug = async (contentType, slug) => {
 	if (!doc) {
 		return null;
 	}
+
+	/**
+	 *  @type import('$lib/types').Content[]}>}
+	 */
+	let lesson = [];
+	if (contentType === ContentType.course) {
+		const lessonQuery = doc.ref
+			.collection('lesson')
+			.where('start', '<=', Timestamp.fromDate(new Date()))
+			.orderBy('start', 'desc')
+			.orderBy('weight')
+			.where('published', '==', 'published');
+		const lessonSnapshot = await lessonQuery.get();
+		lesson = lessonSnapshot.docs.map((doc) => {
+			return {
+				id: doc.id,
+				...doc.data(),
+				start: doc.data().start ? doc.data().start.toDate() : doc.data().start
+			};
+		});
+	}
 	const markdown = doc.data().content || '';
 	const compiled = await compile(markdown);
 
@@ -154,6 +175,7 @@ export const getContentBySlug = async (contentType, slug) => {
 		id: doc.id,
 		...doc.data(),
 		content,
+		lesson,
 		start: doc.data().start ? doc.data().start.toDate() : doc.data().start
 	};
 };

@@ -8,6 +8,7 @@
  * @property {string=} devto
  * @property {string=} excerpt
  * @property {string=} hashnode
+ * @property {Content[]=} lesson
  * @property {string=} preview
  * @property {typeof ContentPublished= } published
  * @property {string=} section

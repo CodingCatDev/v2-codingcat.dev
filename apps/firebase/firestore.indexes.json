@@ -255,6 +255,24 @@
           "order": "DESCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "lesson",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "published",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "start",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "weight",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []
