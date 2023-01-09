@@ -9,7 +9,6 @@
 
 	/**@type {{contentType: string, content: Content | null, course: ContentList, tutorial: ContentList, podcast: ContentList, post: ContentList}}*/
 	export let data;
-	console.log(data);
 </script>
 
 {#if data?.content}
